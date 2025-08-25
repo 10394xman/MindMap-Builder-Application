@@ -47,7 +47,7 @@ const Dashboard = () => {
 
   const fetchMindMaps = async () => {
     try {
-      const response = await axios.get("/api/mindmaps");
+      const response = await axios.get("/api/mindmaps/dashboard");
       setMindMaps(response.data);
       setLoading(false);
     } catch (error) {
@@ -71,7 +71,7 @@ const Dashboard = () => {
 
   const handleCreateNew = async () => {
     try {
-      const response = await axios.post("/api/mindmaps", {
+      const response = await axios.post("/api/mindmaps/dashboard", {
         title: "New Mind Map",
         description: "",
         tags: [],
@@ -86,7 +86,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-gray-900"></div>
       </div>
     );
   }

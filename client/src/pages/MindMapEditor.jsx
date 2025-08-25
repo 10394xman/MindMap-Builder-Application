@@ -203,7 +203,7 @@ const MindMapEditor = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-gray-900 "></div>
       </div>
     );
   }
@@ -303,7 +303,7 @@ const MindMapEditor = () => {
       </div>
 
       {/* Toolbar */}
-      <div className="bg-white border-t px-6 py-3 flex justify-between items-center animation">
+      <div className="bg-white border-t px-6 py-3 flex justify-between items-center animation even-print-page">
         <div className="flex space-x-2">
           <button
             onClick={() => {

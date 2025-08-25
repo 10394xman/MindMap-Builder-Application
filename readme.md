@@ -142,6 +142,7 @@ PORT=5000
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 NODE_ENV=development
+VITE_VERCEL_URL=https://mindmap-builder-application.onrender.com
 ```
 
 ## Scripts

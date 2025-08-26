@@ -20,6 +20,9 @@ const Dashboard = () => {
     setEditField(null);
     setEditValue("");
   };
+
+  const apiBase = import.meta.env.VITE_BACKEND_URL || "";
+
   const saveEditField = async () => {
     setEditLoading(true);
     try {
@@ -27,7 +30,7 @@ const Dashboard = () => {
         editField === "title"
           ? { title: editValue }
           : { description: editValue };
-      await axios.put(`/api/mindmaps/${editId}`, update);
+      await axios.put(`${apiBase}/api/mindmaps/${editId}`, update);
       setMindMaps(
         mindMaps.map((m) => (m._id === editId ? { ...m, ...update } : m))
       );
@@ -47,7 +50,7 @@ const Dashboard = () => {
 
   const fetchMindMaps = async () => {
     try {
-      const response = await axios.get("/api/mindmaps/dashboard");
+      const response = await axios.get(`${apiBase}/api/mindmaps/dashboard`);
       setMindMaps(response.data);
       setLoading(false);
     } catch (error) {
@@ -60,7 +63,7 @@ const Dashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this mind map?")) {
       try {
-        await axios.delete(`/api/mindmaps/${id}`);
+        await axios.delete(`${apiBase}/api/mindmaps/${id}`);
         setMindMaps(mindMaps.filter((map) => map._id !== id));
       } catch (error) {
         console.error("Failed to delete mind map:", error);
@@ -71,7 +74,7 @@ const Dashboard = () => {
 
   const handleCreateNew = async () => {
     try {
-      const response = await axios.post("/api/mindmaps/dashboard", {
+      const response = await axios.post(`${apiBase}/api/mindmaps/dashboard`, {
         title: "New Mind Map",
         description: "",
         tags: [],

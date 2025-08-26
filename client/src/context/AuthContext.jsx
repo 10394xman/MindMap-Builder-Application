@@ -1,5 +1,5 @@
-import  { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import { createContext, useState, useContext, useEffect } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -10,13 +10,15 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+
+  const apiBase = import.meta.env.VITE_BACKEND_URL || "";
 
   // Check if user is logged in on app load
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       fetchUserProfile();
     } else {
       setLoading(false);
@@ -25,12 +27,12 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get('/api/auth/profile');
+      const response = await axios.get(`${apiBase}/api/auth/profile`);
       setUser(response.data);
     } catch (error) {
-      console.error('Failed to fetch user profile:', error);
-      localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
+      console.error("Failed to fetch user profile:", error);
+      localStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
     } finally {
       setLoading(false);
     }
@@ -38,17 +40,20 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      setError('');
-      const response = await axios.post('/api/auth/register', userData);
-      
+      setError("");
+      const response = await axios.post(
+        `${apiBase}/api/auth/register`,
+        userData
+      );
+
       const { token, ...userDetails } = response.data;
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
       setUser(userDetails);
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed';
+      const message = error.response?.data?.message || "Registration failed";
       setError(message);
       return { success: false, error: message };
     }
@@ -56,25 +61,28 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      setError('');
-      const response = await axios.post('/api/auth/login', credentials);
-      
+      setError("");
+      const response = await axios.post(
+        `${apiBase}/api/auth/login`,
+        credentials
+      );
+
       const { token, ...userDetails } = response.data;
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
       setUser(userDetails);
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Login failed';
+      const message = error.response?.data?.message || "Login failed";
       setError(message);
       return { success: false, error: message };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
+    localStorage.removeItem("token");
+    delete axios.defaults.headers.common["Authorization"];
     setUser(null);
   };
 
@@ -85,7 +93,7 @@ export const AuthProvider = ({ children }) => {
     register,
     login,
     logout,
-    clearError: () => setError('')
+    clearError: () => setError(""),
   };
 
   return (

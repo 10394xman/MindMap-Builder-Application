@@ -19,6 +19,7 @@ const MindMapEditor = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [nodeStart, setNodeStart] = useState({ x: 0, y: 0 });
+  const apiBase = import.meta.env.VITE_BACKEND_URL || "";
 
   useEffect(() => {
     fetchMindMap();
@@ -27,7 +28,7 @@ const MindMapEditor = () => {
   // Only set mindMap directly on initial load, do not push to history
   const fetchMindMap = async () => {
     try {
-      const response = await axios.get(`/api/mindmaps/${id}`);
+      const response = await axios.get(`${apiBase}/api/mindmaps/${id}`);
       setMindMap(response.data);
       setHistory([]);
       setFuture([]);
@@ -41,7 +42,7 @@ const MindMapEditor = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`/api/mindmaps/${id}`, mindMap);
+      await axios.put(`${apiBase}/api/mindmaps/${id}`, mindMap);
       // Show success message
       setError("");
       alert("Mind map saved successfully!");
